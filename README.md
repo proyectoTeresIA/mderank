@@ -1,4 +1,4 @@
-# mderanklib
+# mderank
 
 Library for MDERank model to AKE
 
@@ -6,7 +6,7 @@ It has been adapted and improved to work also in Spanish language.
 
 Original Paper: MDERank: A Masked Document Embedding Rank Approach for Unsupervised Keyphrase Extraction
 Original Repo: https://github.com/LinhanZ/mderank
-Based on: https://github.com/oeg-upm/mderanklib
+
 
 
 

@@ -10,22 +10,9 @@ import numpy as np
 import logging
 import argparse
 import codecs
-#import random
 import json
 import os
-#import string
 import nltk
-#from stanfordcorenlp import StanfordCoreNLP
-from accelerate import Accelerator
-
-from nltk.corpus import stopwords
-from itertools import groupby
-# nltk.download('averaged_perceptron_tagger')
-#from nltk.stem import PorterStemmer
-#import itertools
-
-
-#en_model = StanfordCoreNLP(r'stanford-corenlp-full-2018-02-27',quiet=True)
 import spacy
 
 
@@ -901,7 +888,3 @@ if __name__ == '__main__':
 
 
     log.logger.info("Processing time: {}".format(end-start))
-
-
-
-
