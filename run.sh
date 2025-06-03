@@ -2,7 +2,7 @@
 # test MDERank
 # Dataset name: Inspec, SemEval2010, SemEval2017, DUC2001, nus, krapivin
 # Please download data first and save in 'data' folder.
-dataset_name=exec_example
+dataset_name=example_exec
 #CUDA_VISIBLE_DEVICES=0 python MDERank/mderank_main.py --dataset_dir data/$dataset_name --batch_size 1 --distance cos --doc_embed_mode max \
 # --log_dir log_path --dataset_name $dataset_name --layer_num -1  --no_cuda
 

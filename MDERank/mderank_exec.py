@@ -14,66 +14,8 @@ import json
 import os
 import nltk
 import spacy
+from CandidatesGenerator import CandidatesGenerator
 
-
-
-
-'''
-stopword_dict = set(stopwords.words('english'))
-
-GRAMMAR1 = """  NP:
-        {<NN.*|JJ>*<NN.*>}  # Adjective(s)(optional) + Noun(s)"""
-
-GRAMMAR2 = """  NP:
-        {<JJ|VBG>*<NN.*>{0,3}}  # Adjective(s)(optional) + Noun(s)"""
-
-GRAMMAR3 = """  NP:
-        {<NN.*|JJ|VBG|VBN>*<NN.*>}  # Adjective(s)(optional) + Noun(s)"""
-
-
-def extract_candidates(tokens_tagged, no_subset=False):
-    """
-    Based on part of speech return a list of candidate phrases
-    :param text_obj: Input text Representation see @InputTextObj
-    :param no_subset: if true won't put a candidate which is the subset of an other candidate
-    :return keyphrase_candidate: list of list of candidate phrases: [tuple(string,tuple(start_index,end_index))]
-    """
-    np_parser = nltk.RegexpParser(GRAMMAR1)  # Noun phrase parser
-    keyphrase_candidate = []
-    np_pos_tag_tokens = np_parser.parse(tokens_tagged)
-    count = 0
-    for token in np_pos_tag_tokens:
-        if (isinstance(token, nltk.tree.Tree) and token._label == "NP"):
-            np = ' '.join(word for word, tag in token.leaves())
-            length = len(token.leaves())
-            start_end = (count, count + length)
-            count += length
-            keyphrase_candidate.append((np, start_end))
-
-        else:
-            count += 1
-
-    return keyphrase_candidate
-    
-    
-'''
-def remove_starting_articles(text):
-    # Lista de artículos a eliminar
-    articles=[]
-    if lang== 'es':
-        articles = ['la ', 'el ', 'un ','una ','unos ','unas ', 'los ', 'las ','esta ','este ','estos ','estas ','cada ']
-    else:
-        articles = ['a ', 'the ', 'an ', 'this ', 'those ', 'that ', 'which ','every ']
-    text_low= text
-
-    # Iterar sobre cada artículo
-    for article in articles:
-        # Si el texto comienza con el artículo, quitarlo
-
-        if text_low.lower().startswith(article):
-            text = text[len(article):]  # Quitar el artículo
-
-    return text
 
 
 def write_results(lista, ruta_archivo):
@@ -90,40 +32,6 @@ def write_results(lista, ruta_archivo):
         print(f"Archivo guardado correctamente en: {ruta_archivo}")
     except Exception as e:
         print(f"Error al escribir el archivo: {e}")
-
-class InputTextObj:
-    """Represent the input text in which we want to extract keyphrases"""
-
-    def __init__(self, en_model, text=""):
-        """
-        :param is_sectioned: If we want to section the text.
-        :param en_model: the pipeline of tokenization and POS-tagger
-        :param considered_tags: The POSs we want to keep
-        """
-        candidates = []
-        doc = en_model(text)
-        for chunk in doc.noun_chunks:
-            # print(chunk.text, chunk.root.text, chunk.root.dep_, chunk.root.head.text)
-            chunk_processed = remove_starting_articles(chunk.text)
-            # chunk_processed = chunk_processed.lower()
-            if len(chunk_processed)<2:
-                continue
-            candidates.append([chunk_processed,0])
-        '''
-        self.considered_tags = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
-
-        self.tokens = []
-        self.tokens_tagged = []
-        self.tokens = en_model.word_tokenize(text)
-        self.tokens_tagged = en_model.pos_tag(text)
-        assert len(self.tokens) == len(self.tokens_tagged)
-        for i, token in enumerate(self.tokens):
-            if token.lower() in stopword_dict:
-                self.tokens_tagged[i] = (token, "IN")
-                
-        '''
-
-        self.keyphrase_candidate = candidates#extract_candidates(self.tokens_tagged, en_model)
 
 
 
@@ -376,6 +284,8 @@ def get_semeval2017_data(data_path="data/SemEval2017/docsutf8",labels_path="data
     labels={}
     for dirname, dirnames, filenames in os.walk(data_path):
         for fname in filenames:
+            if not fname.endswith('.txt'):
+                continue
             left, right = fname.split('.')
             infile = os.path.join(dirname, fname)
             # f = open(infile, 'rb')
@@ -388,6 +298,8 @@ def get_semeval2017_data(data_path="data/SemEval2017/docsutf8",labels_path="data
             # f.close()
     for dirname, dirnames, filenames in os.walk(labels_path):
         for fname in filenames:
+            if not fname.endswith('.txt'):
+                continue
             left, right = fname.split('.')
             infile = os.path.join(dirname, fname)
             f = open(infile, 'rb')
@@ -475,6 +387,7 @@ def find_candidate_mention(tok_candidate,ori_tokens):
 
 def generate_absent_doc(ori_encode_dict, candidates, idx):
 
+    print(candidates)
     count = 0
     doc_pairs = []
     ori_input_ids = ori_encode_dict["input_ids"].squeeze()
@@ -795,12 +708,9 @@ if __name__ == '__main__':
     global en_model
 
 
-    if lang=='en':
-        en_model = spacy.load("en_core_web_sm")
-    if lang=='es':
-        en_model = spacy.load("es_core_news_sm")
 
 
+    generator = CandidatesGenerator(lang)
 
 
 
@@ -843,13 +753,13 @@ if __name__ == '__main__':
         # Statistic on empty docs
         empty_doc = 0
         try:
-            text_obj = InputTextObj(en_model, doc)
+             generator.generate_candidates(doc)
         except:
             empty_doc += 1
             print("doc: ", doc)
 
         # Generate candidates (lower)
-        cans = text_obj.keyphrase_candidate
+        cans = generator.keyphrase_candidate
         candidates = []
         for can, pos in cans:
             candidates.append(can.lower())
