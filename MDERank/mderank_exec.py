@@ -316,6 +316,8 @@ def get_exec_dataset(data_path="data/exec_example"):
     data={}
     for dirname, dirnames, filenames in os.walk(data_path):
         for fname in filenames:
+            if not fname.endswith('.txt'):
+                continue
             left, right = fname.split('.')
             infile = os.path.join(dirname, fname)
             # f = open(infile, 'rb')
