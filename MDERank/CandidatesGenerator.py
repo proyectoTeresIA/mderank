@@ -21,13 +21,13 @@ class CandidatesGenerator:
         for sent in doc.sents:
 
             doc2= self.model(sent.text)
-            print(sent.text)
+            #print(sent.text)
             sintagmas = [chunk.text for chunk in doc2.noun_chunks]
             #resultado.append((sent.text.strip(), sintagmas))
             # print(chunk.text, chunk.root.text, chunk.root.dep_, chunk.root.head.text)
             for chunk in sintagmas:
-                print(chunk)
-                chunk_processed = remove_starting_articles(chunk,self.lang)
+                #print(chunk)
+                chunk_processed = self.remove_starting_articles(chunk,self.lang)
                 # chunk_processed = chunk_processed.lower()
                 if len(chunk_processed) < 2:
                     continue
@@ -45,27 +45,28 @@ class CandidatesGenerator:
                 self.tokens_tagged[i] = (token, "IN")
 
         '''
-        print(candidates)
+        #print(candidates)
 
         self.keyphrase_candidate = candidates  # extract_candidates(self.tokens_tagged, en_model)
+        return candidates
 
-def remove_starting_articles(text,lang):
-    # Lista de artículos a eliminar
-    articles=[]
-    if lang== 'es':
-        articles = ['la ', 'el ', 'un ','una ','unos ','unas ', 'los ', 'las ','esta ','este ','estos ','estas ','cada ']
-    else:
-        articles = ['a ', 'the ', 'an ', 'this ', 'those ', 'that ', 'which ','every ']
-    text_low= text
+    def remove_starting_articles(self,text,lang):
+        # Lista de artículos a eliminar
+        articles=[]
+        if lang== 'es':
+            articles = ['la ', 'el ', 'un ','una ','unos ','unas ', 'los ', 'las ','esta ','este ','estos ','estas ','cada ']
+        else:
+            articles = ['a ', 'the ', 'an ', 'this ', 'those ', 'that ', 'which ','every ']
+        text_low= text
 
-    # Iterar sobre cada artículo
-    for article in articles:
-        # Si el texto comienza con el artículo, quitarlo
+        # Iterar sobre cada artículo
+        for article in articles:
+            # Si el texto comienza con el artículo, quitarlo
 
-        if text_low.lower().startswith(article):
-            text = text[len(article):]  # Quitar el artículo
+            if text_low.lower().startswith(article):
+                text = text[len(article):]  # Quitar el artículo
 
-    return text
+        return text
 
 
 '''

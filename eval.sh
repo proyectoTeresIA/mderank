@@ -16,5 +16,5 @@ dataset_name=SemEval2017
 
 
 ## SPANISH EXAMPLE
-python MDERank/mderank_main.py --dataset_dir data/$dataset_name --batch_size 1  --doc_embed_mode max \
+python MDERank/mderank_eval.py --dataset_dir data/$dataset_name --batch_size 1  --doc_embed_mode max \
  --log_dir log_path --model_name_or_path PlanTL-GOB-ES/roberta-base-bne --model_type roberta --dataset_name $dataset_name --type_execution eval --layer_num -1 --lang es --no_cuda

@@ -1,0 +1,26 @@
+[project]
+name = "mderank"
+version = "0.1.0"
+description = "Library for MDERANK"
+authors = [{ name = "Pablo Calleja" }]
+
+dependencies = [
+    "spacy==3.7.4",
+    "nltk==3.8.1",
+    "numpy==1.26.4",
+    "matplotlib==3.9.4",
+    "pandas==1.5.3",
+    "StanfordCoreNLP==3.9.1.1",
+    "transformers==4.37.2",
+    "accelerate==0.5.1",
+    "typing==3.7.4.3"
+
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["mderank"]
+exclude = ["data", "tests", "examples"]

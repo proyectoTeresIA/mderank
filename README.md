@@ -8,10 +8,6 @@ Original Paper: MDERank: A Masked Document Embedding Rank Approach for Unsupervi
 Original Repo: https://github.com/LinhanZ/mderank
 
 
-
-
-
-
 ## Install
 
 This project has been developed under Python 3.9.6
@@ -26,9 +22,46 @@ python -m spacy download es_core_news_sm
 
 ```
 
+To install the project as a library use
+```
+pip install -e .
+
+```
+
+## Run library (new method!)
+
+Use it as a library in your own project!
+
+```
+from mderank import MDERank, MDERankConfig
+
+cfg = MDERankConfig(
+    lang="es",
+    model_name_or_path="/Users/pablo/Downloads/maria/roberta-base-bne", ## Huggingface Model!
+    model_type="roberta", ## IMPORTANT FOR THE TOKENIZER
+    log_level="INFO"
+)
 
 
-## Run 
+```
+And the use it to extract
+
+
+extractor = MDERank(cfg)
+
+```
+results = extractor.extract("data/example/docsutf8", 15)
+```
+
+or evaluate
+
+```
+results = extractor.evaluate("../data/example/docsutf8", "../data/example/keys", 15)
+
+```
+
+
+## Run as script (traditional method)
 
 If you want to evaluate a dataset as in the State of the Art, put the dataset in a data folder (data/datasetname/docsutf8 and data/datasetname/keys).
 Configure parameters and arguments of evaluate.sh and run it. 
