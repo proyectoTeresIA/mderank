@@ -6,15 +6,18 @@ from mderank import MDERank, MDERankConfig
 cfg = MDERankConfig(lang="es",model_name_or_path="/Users/pablo/Downloads/maria/roberta-base-bne",model_type='roberta', log_level="INFO")
 extractor = MDERank(cfg)
 
-result = extractor.evaluate("../data/example/docsutf8","../data/example/keys",15)
+#result = extractor.evaluate("../data/example/docsutf8","../data/example/keys",15)
+#print(result)
+#print(len(result[0]))
+
+
+
+texto1= """
+La mala conducta de oxidación es la principal barrera para el aumento del uso de aleaciones basadas en titanio en aplicaciones estructurales de alta temperatura. La demanda de aumentar la temperatura de servicio de estas aleaciones más allá de los 550°C (el límite de temperatura típico) requiere un estudio cuidadoso para comprender el papel que la composición tiene en la conducta de oxidación de las aleaciones basadas en titanio [1–3]. El intento de superar esta limitación en las aleaciones basadas en titanio ha llevado a la producción de aleaciones con resistencia a la oxidación sustancialmente mejorada, como el β-21S, y también al desarrollo de recubrimientos y técnicas de preoxidación [1,4–6]. Aunque es tentador extrapolar la conducta de oxidación (por ejemplo, la ley de velocidad de oxidación, la profundidad de penetración de oxígeno y el grosor de la capa) observada para un número limitado de composiciones bajo cierta condición de oxidación a un rango composicional más amplio, hay numerosos ejemplos en la literatura donde se observan desviaciones de las relaciones esperadas [7,8].
+"""
+
+result = extractor.extract([texto1],15)
 print(result)
 print(len(result[0]))
 
-
-"""
-result = extractor.extract("data/example/docsutf8",15)
-print(result)
-print(len(result[0]))
-"""
-print("fin")
 

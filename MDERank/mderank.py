@@ -85,7 +85,7 @@ class MDERankModel:
 
 
             doc = ' '.join(doc.split()[:512])
-            print(doc)
+            #print(doc)
             doc_list.append(doc)
 
             if self.eval_mode is True:
@@ -139,8 +139,8 @@ class MDERankModel:
         # log.logger.info("Processing time: {}".format(end - start))
 
     def keyphrases_selection(self, doc_list, labels_stemed, labels, dataloader):
-        print(labels)
-        print(labels_stemed)
+        #print(labels)
+        #print(labels_stemed)
         self.model.eval()
 
         cos_similarity_list = {}
@@ -588,7 +588,7 @@ def prepare_data(dataset,eval_dataset):
         # Caso 1: dataset es lista → generar documentos
     if isinstance(dataset, list):
         for i, text in enumerate(dataset):
-            data[f"doc_{i}"] = text
+            data[f"doc_{i}"] = clean_text(text).lower()
 
     if eval_dataset is None:
         return data, None

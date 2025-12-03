@@ -14,7 +14,7 @@ class CandidatesGenerator:
 
 
     def generate_candidates(self,text):
-
+        print(text)
 
         candidates = []
         doc = self.model(text)
